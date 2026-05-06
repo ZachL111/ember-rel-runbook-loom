@@ -1,0 +1,73 @@
+{
+  "repo": "ember-rel-runbook-loom",
+  "language": "Solidity",
+  "category": "Reliability",
+  "goal": "Develop a Solidity command-oriented project for runbook scenarios with safe and unsafe fixtures, remediation hints, and synthetic fixtures only.",
+  "review_model": {
+    "terms": [
+      "budget pressure",
+      "failure width",
+      "recovery gap",
+      "runbook drift"
+    ],
+    "lanes": [
+      "ship",
+      "watch",
+      "hold"
+    ],
+    "score": "signal * 2 + slack + confidence - drag * 3",
+    "purpose": "surface the domain-specific cases that need the most careful review"
+  },
+  "cases": [
+    {
+      "name": "baseline",
+      "focus": "budget pressure",
+      "signal": 49,
+      "slack": 27,
+      "drag": 23,
+      "confidence": 72,
+      "score": 128,
+      "lane": "watch"
+    },
+    {
+      "name": "stress",
+      "focus": "failure width",
+      "signal": 44,
+      "slack": 33,
+      "drag": 12,
+      "confidence": 89,
+      "score": 174,
+      "lane": "ship"
+    },
+    {
+      "name": "edge",
+      "focus": "recovery gap",
+      "signal": 71,
+      "slack": 31,
+      "drag": 31,
+      "confidence": 68,
+      "score": 148,
+      "lane": "ship"
+    },
+    {
+      "name": "recovery",
+      "focus": "runbook drift",
+      "signal": 67,
+      "slack": 53,
+      "drag": 16,
+      "confidence": 63,
+      "score": 202,
+      "lane": "ship"
+    },
+    {
+      "name": "stale",
+      "focus": "budget pressure",
+      "signal": 64,
+      "slack": 48,
+      "drag": 12,
+      "confidence": 62,
+      "score": 202,
+      "lane": "ship"
+    }
+  ]
+}

@@ -1,69 +1,40 @@
 # ember-rel-runbook-loom
 
-`ember-rel-runbook-loom` is a focused Solidity codebase around develop a Solidity command-oriented project for runbook scenarios with safe and unsafe fixtures, remediation hints, and synthetic fixtures only. It is meant to be easy to inspect, run, and extend without a hosted service.
+`ember-rel-runbook-loom` is a compact Solidity repository for reliability, centered on this goal: Develop a Solidity command-oriented project for runbook scenarios with safe and unsafe fixtures, remediation hints, and synthetic fixtures only.
 
-## Ember Rel Runbook Loom Walkthrough
+## Project Rationale
 
-I would read the project from the outside in: command, fixture, model, then roadmap. That keeps the reliability idea grounded in files that can be checked locally.
+This is intentionally local and self-contained so it can be inspected without credentials, services, or seeded history.
 
-## Reason For The Project
+## Ember Rel Runbook Loom Review Notes
 
-This is not a wrapper around a service. It is a self-contained project that shows how the model behaves when demand, capacity, latency, risk, and weight move in different directions.
+For a quick review, compare `runbook drift` with `budget pressure` before reading the middle cases.
 
-## Data Notes
+## Feature Set
 
-`examples/extended_cases.csv` adds six named cases. I kept the names plain so failures are easy to read in a terminal: baseline, pressure, surge, degraded, recovery, and boundary.
+- `fixtures/domain_review.csv` adds cases for budget pressure and failure width.
+- `metadata/domain-review.json` records the same cases in structured form.
+- `config/review-profile.json` captures the read order and the two review questions.
+- `examples/ember-rel-runbook-walkthrough.md` walks through the case spread.
+- The Solidity code includes a review path for `runbook drift` and `budget pressure`.
+- `docs/field-notes.md` explains the strongest and weakest cases.
 
-## How It Is Put Together
+## Architecture
 
-The project is organized around a compact model rather than a large framework. Inputs are scored, classified, and checked against golden fixtures. The constants live in code and are mirrored in metadata so documentation drift is easy to catch. The Solidity project uses Foundry tests and pure contract functions so invariants are cheap to exercise.
+The fixture data drives the tests. The code stays thin, while `metadata/domain-review.json` and `config/review-profile.json` explain what each case is meant to protect.
 
-## Capabilities
+The Solidity checks add a pure review lens and Foundry coverage.
 
-- Models failure windows with deterministic scoring and explicit review decisions.
-- Uses fixture data to keep retry budgets changes visible in code review.
-- Includes extended examples for runbook checks, including `surge` and `degraded`.
-- Documents recovery paths tradeoffs in `docs/operations.md`.
-- Runs locally with a single verification command and no external credentials.
-
-## Command Examples
+## Usage
 
 ```powershell
 powershell -NoProfile -ExecutionPolicy Bypass -File scripts/verify.ps1
 ```
 
-This runs the language-level build or test path against the compact fixture set.
+## Test Command
 
-## Check The Work
+The same command runs the local verification path. The highest-scoring domain case is `recovery` at 202, which lands in `ship`. The most cautious case is `baseline` at 128, which lands in `watch`.
 
-```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File scripts/audit.ps1
-```
+## Next Improvements
 
-The audit command checks repository structure and README constraints before it delegates to the verifier.
-
-## Where Things Live
-
-- `src`: primary implementation
-- `test`: language test directory
-- `fixtures`: compact golden scenarios
-- `examples`: expanded scenario set
-- `metadata`: project constants and verification metadata
-- `docs`: operations and extension notes
-- `scripts`: local verification and audit commands
-- `foundry.toml`: Foundry project configuration
-
-## Possible Extensions
-
-- Split the scoring constants into a typed configuration object and validate it before use.
-- Add a comparison mode that shows how decisions change when one signal is adjusted.
-- Add a loader for `examples/extended_cases.csv` and promote selected cases into the language test suite.
-- Add one more reliability fixture that focuses on a malformed or borderline input.
-
-## Tradeoffs
-
-The fixture set is deliberately small. That keeps the review surface clear, but it also means the model should not be treated as a complete domain simulator.
-
-## Getting It Running
-
-Use a normal shell with Solidity available on `PATH`. The verifier is written as a PowerShell script because the portfolio was assembled on Windows.
+No external service is required. A deeper version would add more negative cases and a clearer boundary around invalid input.
